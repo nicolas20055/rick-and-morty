@@ -1,17 +1,63 @@
 window.addEventListener("DOMContentLoaded", getResults())
 
 
-function getResults() {
-  fetch('https://rickandmortyapi.com/api/character')
-    .then(response => response.json())
-    .then(data => {
-      data.results.forEach(character => {
-        createCard(character);
-      });
-    })
-    .catch(error => console.error('Error:', error));
+
+async function getCharacters() {
+  try {
+      const response = await fetch('https://rickandmortyapi.com/api/character');
+      const data = await response.json();
+      
+      Data(data); 
+
+  } catch (error) {
+      console.error('Error al obtener los personajes:', error);
+  }
+}
+getCharacters();
+
+function Data(data) {
+  data.results.forEach(character => {
+      makeCharacter(character);
+  });
 }
 
+function searchCharacters() {
+  const searchTerm = document.getElementById('search').value.toLowerCase();
+  const cards = document.querySelectorAll('.card');
+  
+  cards.forEach(card => {
+      const name = card.querySelector('h2').textContent.toLowerCase();
+      card.style.display = name.includes(searchTerm) ? '' : 'none';
+  });
+}
+
+document.getElementById('search').addEventListener('input', searchCharacters);
+
+function Data(data) {
+    data.results.forEach(character => {
+        makeCharacter(character);
+    });
+}
+
+function searchCharacters() {
+    const searchTerm = document.getElementById('search').value.toLowerCase();
+    const cards = document.querySelectorAll('.card');
+    
+    cards.forEach(card => {
+        const name = card.querySelector('h2').textContent.toLowerCase();
+        card.style.display = name.includes(searchTerm) ? '' : 'none';
+    });
+}
+
+document.getElementById('search').addEventListener('input', searchCharacters);
+
+function getResults() {
+  fetch('https://rickandmortyapi.com/api/character').then(response => response.json()).then(data => {
+    data.results.forEach(character => {
+      createCard(character);
+    });
+  }).catch(error => console.error('Error:', error));
+}
 
 function createCard(character) {
   console.log(character)
@@ -43,3 +89,20 @@ function createCard(character) {
   container2.appendChild(specie)
   document.querySelector("main").appendChild(container)
 }
+
+
+/* CODIGO instructor
+const getCharacter = async (URL) => {
+  const response = await fetch (URL)
+  const data = await response.json ()
+  console.log(data.results.length)
+  }
+  data.results.forEach(character => {
+        makecard(character);
+
+
+        para que sirve sirve el try catch
+        imcomplementarlo en el codigo 
+        buscar por nombres las cards 
+        
+*/
